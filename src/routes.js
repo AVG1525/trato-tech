@@ -2,6 +2,7 @@ import PaginaPadrao from 'components/PaginaPadrao';
 import Carrinho from 'pages/Carrinho';
 import Categoria from 'pages/Categoria';
 import Home from 'pages/Home';
+import Anuncie from 'pages/Anuncie';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 export default function Router() {
@@ -12,6 +13,7 @@ export default function Router() {
           <Route index element={<Home />} />
           <Route path='/categoria/:nomeCategoria' element={<Categoria />} />
           <Route path='carrinho' element={<Carrinho />} />
+          <Route path='anuncie' element={<Anuncie />} />
         </Route>
       </Routes>
     </BrowserRouter>
