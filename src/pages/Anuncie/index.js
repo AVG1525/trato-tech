@@ -28,7 +28,7 @@ export default function Anuncie() {
             <form className={styles.formulario}>
                 <input
                     className={errors.nome ? styles['input-erro'] : ''}
-                    {...register('nome', { required: 'O campo nome é obrigatório' })}
+                    {...register('titulo', { required: 'O campo nome é obrigatório' })}
                     placeholder="Nome do produto"
                     alt="nome do produto" />
                 {errors.nome && <span className={styles['mensagem-erro']}>{errors.nome.message}</span>}
@@ -42,7 +42,7 @@ export default function Anuncie() {
 
                 <input
                     className={errors.imagem ? styles['input-erro'] : ''}
-                    {...register('imagem', { required: 'O campo imagem é obrigatório' })}
+                    {...register('foto', { required: 'O campo imagem é obrigatório' })}
                     placeholder="URL da imagem do produto"
                     alt="url da imagem do produto" />
                 {errors.imagem && <span className={styles['mensagem-erro']}>{errors.imagem.message}</span>}
@@ -59,7 +59,7 @@ export default function Anuncie() {
 
                 <input
                     className={errors.preco ? styles['input-erro'] : ''}
-                    {...register('preco', { required: 'O campo preço é obrigatório' })}
+                    {...register('preco', { required: 'O campo preço é obrigatório', valueAsNumber: true })}
                     type="number"
                     placeholder="Preço do produto" />
                 {errors.preco && <span className={styles['mensagem-erro']}>{errors.preco.message}</span>}
