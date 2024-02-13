@@ -234,16 +234,31 @@ const itensSlice = createSlice({
   reducers: {
     mudarFavorito: (state, { payload }) => {
       state.map(item => {
-        if(item.id === payload) item.favorito = !item.favorito;
+        if (item.id === payload) item.favorito = !item.favorito;
         return item;
       })
     },
     addItem: (state, { payload }) => {
       state.push({ ...payload, id: uuid() });
+    },
+    editItem: (state, { payload }) => {
+      const index = state.findIndex((item) => item.id === payload.id);
+
+      Object.assign(state[index], payload.item);
+    },
+    deleteItem: (state, { payload }) => {
+      const index = state.findIndex((item) => item.id === payload);
+
+      state.splice(index, 1);
     }
   }
 });
 
-export const { mudarFavorito, addItem } = itensSlice.actions;
+export const {
+  mudarFavorito,
+  addItem,
+  editItem,
+  deleteItem
+} = itensSlice.actions;
 
 export default itensSlice.reducer;

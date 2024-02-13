@@ -4,14 +4,19 @@ import {
   AiFillHeart,
   AiFillMinusCircle,
   AiFillPlusCircle,
+  AiOutlineCheck,
+  AiFillEdit,
+  AiFillCloseCircle
 } from 'react-icons/ai';
 import {
   FaCartPlus
 } from 'react-icons/fa';
-import { mudarFavorito } from 'store/reducers/itens';
+import { deleteItem, editItem, mudarFavorito } from 'store/reducers/itens';
 import { useDispatch, useSelector } from 'react-redux';
 import { mudarCarrinho, mudarQuantidade } from 'store/reducers/carrinho';
 import classNames from 'classnames';
+import { useState } from 'react';
+import Input from 'components/Input';
 
 const iconeProps = {
   size: 24,
@@ -37,6 +42,9 @@ export default function Item(props) {
   const dispatch = useDispatch();
   const estaNoCarrinho = useSelector(state => state.carrinho.some(itemNoCarrinho => itemNoCarrinho.id === id));
 
+  const [isEdit, setIsEdit] = useState(false);
+  const [newTitle, setNewTitle] = useState(titulo);
+
   function resolverFavorito() {
     dispatch(mudarFavorito(id));
   }
@@ -45,16 +53,45 @@ export default function Item(props) {
     dispatch(mudarCarrinho(id));
   }
 
+  const editComponent = <>
+    {isEdit
+      ? <AiOutlineCheck
+        {...iconeProps}
+        className={styles['item-acao']}
+        onClick={() => {
+          setIsEdit(false);
+          dispatch(editItem({
+            id,
+            item: { titulo: newTitle }
+          }))
+        }}
+      />
+      : <AiFillEdit
+        {...iconeProps}
+        className={styles['item-acao']}
+        onClick={() => setIsEdit(true)}
+      />
+    }
+  </>;
+
   return (
     <div className={classNames(styles.item, {
       [styles.itemNoCarrinho]: carrinho,
     })}>
+      <AiFillCloseCircle
+        {...iconeProps}
+        className={`${styles['item-acao']} ${styles['item-deletar']}`}
+        onClick={() => dispatch(deleteItem(id))}
+      />
       <div className={styles['item-imagem']}>
         <img src={foto} alt={titulo} />
       </div>
       <div className={styles['item-descricao']}>
         <div className={styles['item-titulo']}>
-          <h2>{titulo}</h2>
+          {isEdit
+            ? <Input value={newTitle} onChange={(event) => setNewTitle(event.target.value)} />
+            : <h2>{titulo}</h2>
+          }
           <p>{descricao}</p>
         </div>
         <div className={styles['item-info']}>
@@ -73,7 +110,7 @@ export default function Item(props) {
                   <AiFillMinusCircle
                     {...quantidadeProps}
                     onClick={() => {
-                      if(quantidade >= 1) {
+                      if (quantidade >= 1) {
                         dispatch(mudarQuantidade({ id, quantidade: -1 }));
                       }
                     }}
@@ -85,12 +122,18 @@ export default function Item(props) {
                   />
                 </div>
               )
-              : (<FaCartPlus
-                {...iconeProps}
-                color={estaNoCarrinho ? '#1875E8' : iconeProps.color}
-                className={styles['item-acao']}
-                onClick={resolverCarrinho}
-              />)
+              : (
+                <>
+                  <FaCartPlus
+                    {...iconeProps}
+                    color={estaNoCarrinho ? '#1875E8' : iconeProps.color}
+                    className={styles['item-acao']}
+                    onClick={resolverCarrinho}
+                  />
+
+                  {editComponent}
+                </>
+              )
             }
           </div>
         </div>
