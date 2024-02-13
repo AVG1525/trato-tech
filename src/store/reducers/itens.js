@@ -237,10 +237,13 @@ const itensSlice = createSlice({
         if(item.id === payload) item.favorito = !item.favorito;
         return item;
       })
+    },
+    addItem: (state, { payload }) => {
+      state.push({ ...payload, id: uuid() });
     }
   }
 });
 
-export const { mudarFavorito } = itensSlice.actions;
+export const { mudarFavorito, addItem } = itensSlice.actions;
 
 export default itensSlice.reducer;

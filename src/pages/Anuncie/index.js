@@ -1,10 +1,13 @@
 import Header from "components/Header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from './Anuncie.module.scss';
 import Button from "components/Button";
 import { useForm } from 'react-hook-form';
+import { addItem } from "store/reducers/itens";
 
 export default function Anuncie() {
+    const dispatch = useDispatch();
+
     const categorias = useSelector(state => state.categorias.map(({ nome, id }) => ({ nome, id })));
     const { register, handleSubmit, reset, formState } = useForm({
         defaultValues: {
@@ -14,8 +17,8 @@ export default function Anuncie() {
 
     const { errors } = formState;
 
-    function cadastrar(param) {
-        console.log(param);
+    function cadastrar(data) {
+        dispatch(addItem(data));
         reset();
     }
 
